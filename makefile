@@ -4,12 +4,14 @@ INC=-Iboolindexer
 SRCS = $(wildcard boolindexer/*.cpp)
 OBJS = $(patsubst %.cpp,%.o,$(SRCS) ) 
 TARGET = index
-LIB = -L ./boolindexer -lindexer
+LIBDIR = lib
+LIB = -L ./$(LIBDIR) -lindexer
 
-$(TARGET) : main.cpp boolindexer/libindexer.a
+$(TARGET) : main.cpp $(LIBDIR)/libindexer.a
 	$(CXX) -o $@  $^ $(CFLAGS) $(INC) $(LIB)
 
-boolindexer/libindexer.a : $(OBJS) 
+$(LIBDIR)/libindexer.a : $(OBJS) 
+	mkdir -p lib
 	ar rcs -o $@ $^
 
 $(OBJS) : %.o : %.cpp
